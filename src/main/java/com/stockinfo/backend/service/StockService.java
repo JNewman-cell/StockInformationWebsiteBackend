@@ -47,6 +47,7 @@ public class StockService {
         Stock stock = stockRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Stock not found with id: " + id));
 
+        // Note: Symbol is not updated to maintain unique constraint integrity
         stock.setCompanyName(stockDetails.getCompanyName());
         stock.setCurrentPrice(stockDetails.getCurrentPrice());
         stock.setPreviousClose(stockDetails.getPreviousClose());
