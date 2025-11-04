@@ -33,3 +33,8 @@ logs/
 *.class
 *.jar
 !.mvn/wrapper/maven-wrapper.jar
+
+# Environment / secrets
+.env
+.env.local
+application-secrets.properties
