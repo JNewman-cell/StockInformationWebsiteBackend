@@ -1,4 +1,4 @@
-package com.stockinfo.backend.config;
+package com.stockInformation.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

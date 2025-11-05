@@ -1,6 +1,6 @@
-package com.stockinfo.backend.repository;
+package com.stockInformation.db.repository;
 
-import com.stockinfo.backend.entity.TickerSummary;
+import com.stockInformation.db.entity.TickerSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

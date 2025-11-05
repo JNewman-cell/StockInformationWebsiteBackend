@@ -1,2 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
-com.stockinfo.backend.config.DotenvEnvironmentPostProcessor
+com.stockInformation.config.DotenvEnvironmentPostProcessor

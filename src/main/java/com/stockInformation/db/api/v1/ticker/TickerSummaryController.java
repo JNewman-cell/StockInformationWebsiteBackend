@@ -1,7 +1,8 @@
-package com.stockinfo.backend.api.v1.ticker;
+package com.stockInformation.db.api.v1.ticker;
 
-import com.stockinfo.backend.entity.TickerSummary;
-import com.stockinfo.backend.service.TickerSummaryService;
+import com.stockInformation.db.entity.TickerSummary;
+import com.stockInformation.db.service.TickerSummaryService;
+import com.stockInformation.db.dto.TickerSummaryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @RestController

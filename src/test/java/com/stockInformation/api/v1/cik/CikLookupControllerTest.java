@@ -1,39 +1,37 @@
-package com.stockinfo.backend.api.v1.cik;
+package com.stockInformation.api.v1.cik;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stockinfo.backend.entity.CikLookup;
-import com.stockinfo.backend.service.CikLookupService;
+import com.stockInformation.db.entity.CikLookup;
+import com.stockInformation.db.service.CikLookupService;
+import com.stockInformation.db.api.v1.cik.CikLookupController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = CikLookupController.class)
-@Import(com.stockinfo.backend.api.v1.cik.CikLookupMapperImpl.class)
+@Import({
+    com.stockInformation.db.api.v1.cik.CikLookupMapperImpl.class,
+    com.stockInformation.config.SecurityConfig.class
+})
 class CikLookupControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private CikLookupService cikLookupService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Test
+    @WithMockUser
     void testGetCikLookupByCik() throws Exception {
         CikLookup cikLookup = new CikLookup(320193, "Apple Inc.");
 
@@ -48,6 +46,7 @@ class CikLookupControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCikLookupByCikNotFound() throws Exception {
         when(cikLookupService.findByCik(999999)).thenReturn(Optional.empty());
 

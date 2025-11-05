@@ -1,4 +1,4 @@
-package com.stockinfo.backend.config;
+package com.stockInformation.config;
 
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;

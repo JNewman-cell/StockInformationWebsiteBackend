@@ -1,6 +1,7 @@
-package com.stockinfo.backend.api.v1.ticker;
+package com.stockInformation.db.api.v1.ticker;
 
-import com.stockinfo.backend.entity.TickerSummary;
+import com.stockInformation.db.entity.TickerSummary;
+import com.stockInformation.db.dto.TickerSummaryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;

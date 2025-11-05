@@ -1,7 +1,8 @@
-package com.stockinfo.backend.service;
+package com.stockInformation.service;
 
-import com.stockinfo.backend.entity.CikLookup;
-import com.stockinfo.backend.repository.CikLookupRepository;
+import com.stockInformation.db.entity.CikLookup;
+import com.stockInformation.db.repository.CikLookupRepository;
+import com.stockInformation.db.service.CikLookupService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

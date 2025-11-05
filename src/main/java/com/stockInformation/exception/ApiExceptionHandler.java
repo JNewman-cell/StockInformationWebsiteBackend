@@ -1,4 +1,4 @@
-package com.stockinfo.backend.exception;
+package com.stockInformation.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

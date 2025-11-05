@@ -1,6 +1,7 @@
-package com.stockinfo.backend.repository;
+package com.stockInformation.repository;
 
-import com.stockinfo.backend.entity.CikLookup;
+import com.stockInformation.db.entity.CikLookup;
+import com.stockInformation.db.repository.CikLookupRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

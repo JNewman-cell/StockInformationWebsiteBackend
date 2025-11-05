@@ -1,4 +1,4 @@
-package com.stockinfo.backend.entity;
+package com.stockInformation.db.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

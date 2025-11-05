@@ -1,4 +1,4 @@
-package com.stockinfo.backend.api.v1.ticker;
+package com.stockInformation.db.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

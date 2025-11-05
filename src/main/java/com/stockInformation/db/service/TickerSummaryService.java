@@ -1,7 +1,7 @@
-package com.stockinfo.backend.service;
+package com.stockInformation.db.service;
 
-import com.stockinfo.backend.entity.TickerSummary;
-import com.stockinfo.backend.repository.TickerSummaryRepository;
+import com.stockInformation.db.entity.TickerSummary;
+import com.stockInformation.db.repository.TickerSummaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,6 @@
-package com.stockinfo.backend.repository;
+package com.stockInformation.db.repository;
 
-import com.stockinfo.backend.entity.CikLookup;
+import com.stockInformation.db.entity.CikLookup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

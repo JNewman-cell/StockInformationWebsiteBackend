@@ -1,12 +1,12 @@
-package com.stockinfo.backend.api.v1.cik;
+package com.stockInformation.db.api.v1.cik;
 
-import com.stockinfo.backend.entity.CikLookup;
-import com.stockinfo.backend.service.CikLookupService;
+import com.stockInformation.db.entity.CikLookup;
+import com.stockInformation.db.service.CikLookupService;
+import com.stockInformation.db.dto.CikLookupDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController

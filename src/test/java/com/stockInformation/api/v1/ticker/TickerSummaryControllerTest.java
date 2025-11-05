@@ -1,19 +1,19 @@
-package com.stockinfo.backend.api.v1.ticker;
+package com.stockInformation.api.v1.ticker;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stockinfo.backend.entity.TickerSummary;
-import com.stockinfo.backend.service.TickerSummaryService;
+import com.stockInformation.db.entity.TickerSummary;
+import com.stockInformation.db.service.TickerSummaryService;
+import com.stockInformation.db.api.v1.ticker.TickerSummaryController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -26,19 +26,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = TickerSummaryController.class)
-@Import(com.stockinfo.backend.api.v1.ticker.TickerSummaryMapperImpl.class)
+@Import({
+    com.stockInformation.db.api.v1.ticker.TickerSummaryMapperImpl.class,
+    com.stockInformation.config.SecurityConfig.class
+})
 class TickerSummaryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private TickerSummaryService tickerSummaryService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Test
+    @WithMockUser
     void testGetAllTickerSummaries() throws Exception {
         TickerSummary ticker1 = new TickerSummary("AAPL", new BigDecimal("150.00"));
         TickerSummary ticker2 = new TickerSummary("MSFT", new BigDecimal("300.00"));
@@ -58,6 +59,7 @@ class TickerSummaryControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetTickerSummaryByTicker() throws Exception {
         TickerSummary ticker = new TickerSummary("AAPL", new BigDecimal("150.00"));
 
@@ -72,6 +74,7 @@ class TickerSummaryControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetTickerSummaryByTickerNotFound() throws Exception {
         when(tickerSummaryService.findByTicker("INVALID")).thenReturn(Optional.empty());
 

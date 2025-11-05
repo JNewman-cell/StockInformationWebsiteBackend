@@ -1,6 +1,7 @@
-package com.stockinfo.backend.api.v1.cik;
+package com.stockInformation.db.api.v1.cik;
 
-import com.stockinfo.backend.entity.CikLookup;
+import com.stockInformation.db.entity.CikLookup;
+import com.stockInformation.db.dto.CikLookupDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.stockinfo.backend.service;
+package com.stockInformation.db.service;
 
-import com.stockinfo.backend.entity.CikLookup;
-import com.stockinfo.backend.repository.CikLookupRepository;
+import com.stockInformation.db.entity.CikLookup;
+import com.stockInformation.db.repository.CikLookupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

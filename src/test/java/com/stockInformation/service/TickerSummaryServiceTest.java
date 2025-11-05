@@ -1,7 +1,8 @@
-package com.stockinfo.backend.service;
+package com.stockInformation.service;
 
-import com.stockinfo.backend.entity.TickerSummary;
-import com.stockinfo.backend.repository.TickerSummaryRepository;
+import com.stockInformation.db.entity.TickerSummary;
+import com.stockInformation.db.repository.TickerSummaryRepository;
+import com.stockInformation.db.service.TickerSummaryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
