@@ -1,15 +1,13 @@
 package com.stockInformation.search.repository;
 
-import com.stockInformation.db.entity.TickerSummary;
 import com.stockInformation.search.dto.AutocompleteResult;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SearchRepository extends JpaRepository<TickerSummary, String> {
+public interface SearchRepository{
 
     @Query(value = "SELECT t.ticker AS symbol, c.company_name AS name, "
         + "CAST(((CASE WHEN LOWER(t.ticker) = :query THEN 1 "
