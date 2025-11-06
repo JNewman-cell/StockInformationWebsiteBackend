@@ -25,9 +25,9 @@ public class SearchService {
      *  - Error modes: returns empty results list if nothing found
      */
     @Transactional(readOnly = true)
-    public AutocompleteResponse autocomplete(String originalQuery) {
+    public AutocompleteResponse autocomplete(String query) {
         // Lowercase the input for the SQL query which expects lowercase comparisons
-        List<AutocompleteResult> results = searchRepository.searchByInputIgnoreCase(originalQuery.toLowerCase());
-        return new AutocompleteResponse(originalQuery, results);
+        List<AutocompleteResult> results = searchRepository.searchByInputIgnoreCase(query.toLowerCase());
+        return new AutocompleteResponse(query, results);
     }
 }

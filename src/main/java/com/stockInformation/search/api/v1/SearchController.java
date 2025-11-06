@@ -14,14 +14,18 @@ public class SearchController {
     private final SearchService searchService;
 
     /**
-     * Search by company name and ticker symbol
+     * Search by company name and ticker symbol.
      * Query Parameters:
-     * Search Input: The keyword to search for in company names and ticker symbols.
+     *  - query: the keyword to search for in company names and ticker symbols
+     *    (e.g. /api/v1/search/auto-complete?query=apple+inc)
+     *
+     * The controller forwards the raw query to the service which handles
+     * normalization (trimming/lowercasing) and the search logic.
      */
     @GetMapping("/auto-complete")
-    public ResponseEntity<AutocompleteResponse> searchTickerSummaries(@RequestParam String searchInput) {
+    public ResponseEntity<AutocompleteResponse> searchTickerSummaries(@RequestParam String query) {
         // Delegate creation of the AutocompleteResponse to the service layer
-        AutocompleteResponse response = searchService.autocomplete(searchInput);
+        AutocompleteResponse response = searchService.autocomplete(query);
         return ResponseEntity.ok(response);
     }
 }
