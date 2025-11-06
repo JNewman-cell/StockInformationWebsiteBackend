@@ -1,8 +1,7 @@
-package com.stockInformation.cikLookup.api.v1.ticker;
+package com.stockInformation.tickerSummary.api.v1;
 
 import com.stockInformation.tickerSummary.entity.TickerSummary;
 import com.stockInformation.tickerSummary.service.TickerSummaryService;
-import com.stockInformation.tickerSummary.api.v1.TickerSummaryController;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = TickerSummaryController.class)
 @Import({
-    com.stockInformation.db.api.v1.ticker.TickerSummaryMapperImpl.class,
+    com.stockInformation.tickerSummary.api.v1.TickerSummaryMapperImpl.class,
     com.stockInformation.config.SecurityConfig.class
 })
 class TickerSummaryControllerTest {

@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.stockInformation.cikLookup.entity.CikLookup;
 import com.stockInformation.cikLookup.repository.CikLookupRepository;
-import com.stockInformation.cikLookup.service.CikLookupService;
 
 import java.util.Optional;
 

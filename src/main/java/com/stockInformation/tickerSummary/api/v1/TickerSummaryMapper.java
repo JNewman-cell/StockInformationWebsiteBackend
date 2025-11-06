@@ -2,7 +2,6 @@ package com.stockInformation.tickerSummary.api.v1;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import com.stockInformation.tickerSummary.dto.TickerSummaryDTO;
 import com.stockInformation.tickerSummary.entity.TickerSummary;
@@ -10,7 +9,7 @@ import com.stockInformation.tickerSummary.entity.TickerSummary;
 import org.mapstruct.MappingTarget;
 import java.util.List;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface TickerSummaryMapper {
 
     @Mapping(target = "cik", source = "cikLookup.cik")

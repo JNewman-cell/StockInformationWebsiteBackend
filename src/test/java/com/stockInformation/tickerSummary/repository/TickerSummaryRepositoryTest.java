@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.stockInformation.tickerSummary.entity.TickerSummary;
-import com.stockInformation.tickerSummary.repository.TickerSummaryRepository;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -27,7 +26,7 @@ class TickerSummaryRepositoryTest {
         tickerSummary.setTwoHundredDayAverage(BigDecimal.ZERO);
 
         // When
-        TickerSummary saved = tickerSummaryRepository.save(tickerSummary);
+        tickerSummaryRepository.save(tickerSummary);
         Optional<TickerSummary> found = tickerSummaryRepository.findByTickerIgnoreCase("aapl");
 
         // Then

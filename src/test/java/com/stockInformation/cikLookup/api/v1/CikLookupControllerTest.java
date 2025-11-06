@@ -7,7 +7,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.stockInformation.cikLookup.api.v1.CikLookupController;
 import com.stockInformation.cikLookup.entity.CikLookup;
 import com.stockInformation.cikLookup.service.CikLookupService;
 

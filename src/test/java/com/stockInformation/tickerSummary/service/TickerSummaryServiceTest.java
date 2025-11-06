@@ -1,4 +1,4 @@
-package com.stockInformation.cikLookup.service;
+package com.stockInformation.tickerSummary.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 
 import com.stockInformation.tickerSummary.entity.TickerSummary;
 import com.stockInformation.tickerSummary.repository.TickerSummaryRepository;
-import com.stockInformation.tickerSummary.service.TickerSummaryService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
