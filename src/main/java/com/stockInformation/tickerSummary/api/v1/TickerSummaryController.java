@@ -2,8 +2,6 @@ package com.stockInformation.tickerSummary.api.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,7 @@ public class TickerSummaryController {
 
     private final TickerSummaryService tickerSummaryService;
     private final TickerSummaryMapper tickerSummaryMapper;
-    private static final int MAX_PAGE_SIZE = 100;
+    private static final Set<Integer> PAGE_SIZES = Set.of(10, 25, 50);
     private static final Set<String> ALLOWED_SORT_FIELDS = Set.of(
         "ticker", "company_name", "previous_close",
         "pe", "forward_pe", "dividend_yield",
@@ -32,20 +30,7 @@ public class TickerSummaryController {
     private static final Set<String> SORT_DIRECTIONS = Set.of(
         "ASC", "DESC"
     );
-
-    /**
-     * Get all ticker summaries with pagination
-     */
-    @GetMapping
-    public ResponseEntity<Page<TickerSummaryDTO>> getAllTickerSummaries(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<TickerSummary> tickerSummaries = tickerSummaryService.findAll(pageable);
-        Page<TickerSummaryDTO> dtos = tickerSummaries.map(tickerSummaryMapper::toDTO);
-        return ResponseEntity.ok(dtos);
-    }
-
+    
     /**
      * Get ticker summary by ticker symbol
      */
@@ -85,10 +70,9 @@ public class TickerSummaryController {
         if (page < 0) {
             return ResponseEntity.badRequest().build();
         }
-        if (pageSize < 1 || pageSize > MAX_PAGE_SIZE) {
+        if (!PAGE_SIZES.contains(pageSize)) {
             return ResponseEntity.badRequest().build();
         }
-
         // Validate sortOrder (must be ASC or DESC)
         if (!SORT_DIRECTIONS.contains(sortOrder)) {
             return ResponseEntity.badRequest().build();

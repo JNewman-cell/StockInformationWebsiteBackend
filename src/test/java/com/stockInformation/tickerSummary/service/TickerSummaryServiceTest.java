@@ -34,7 +34,7 @@ class TickerSummaryServiceTest {
     void testFindByTicker() {
         // Given
         TickerSummary tickerSummary = new TickerSummary("AAPL", new BigDecimal("150.00"));
-        when(tickerSummaryRepository.findByTickerIgnoreCase("AAPL")).thenReturn(Optional.of(tickerSummary));
+        when(tickerSummaryRepository.findByTickerIgnoreCase("aapl")).thenReturn(Optional.of(tickerSummary));
 
         // When
         Optional<TickerSummary> result = tickerSummaryService.findByTicker("AAPL");
@@ -42,7 +42,7 @@ class TickerSummaryServiceTest {
         // Then
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(tickerSummary);
-        verify(tickerSummaryRepository).findByTickerIgnoreCase("AAPL");
+        verify(tickerSummaryRepository).findByTickerIgnoreCase("aapl");
     }
 
     @Test

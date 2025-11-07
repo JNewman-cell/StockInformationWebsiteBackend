@@ -16,7 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(SearchRepositoryImpl.class)
+@Import({SearchRepositoryImpl.class, com.stockInformation.config.QuerydslConfig.class})
 class SearchRepositoryTest {
 
     @Autowired

@@ -67,6 +67,8 @@ public class TickerSummaryCompanyRepositoryImpl implements TickerSummaryCompanyR
 
         long totalCount = (total != null) ? total : 0L;
 
-        return new PageImpl<>(content, pageable, totalCount);
+        @SuppressWarnings("null")
+        Page<TickerSummaryDTO> page = new PageImpl<>(content, pageable, totalCount);
+        return page;
 	}
 }
