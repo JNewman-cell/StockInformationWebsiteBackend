@@ -15,9 +15,6 @@ public record TickerSummaryDTO(
     @Size(max = 20, message = "Ticker symbol cannot exceed 20 characters")
     String ticker,
 
-    @Schema(description = "Central Index Key (CIK) number of the company", example = "320193")
-    Integer cik,
-
     @Schema(description = "Company name associated with the ticker", example = "Apple Inc.")
     String companyName,
 
@@ -60,6 +57,6 @@ public record TickerSummaryDTO(
 
     // Custom constructor for test convenience
     public TickerSummaryDTO(String ticker, BigDecimal previousClose) {
-        this(ticker, null, null, null, previousClose, null, null, null, null, null, null);
+        this(ticker, null, null, previousClose, null, null, null, null, null, null);
     }
 }

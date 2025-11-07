@@ -2,6 +2,7 @@ package com.stockInformation.tickerSummary.api.v1;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import com.stockInformation.tickerSummary.dto.TickerSummaryDTO;
 import com.stockInformation.tickerSummary.entity.TickerSummary;
@@ -9,10 +10,9 @@ import com.stockInformation.tickerSummary.entity.TickerSummary;
 import org.mapstruct.MappingTarget;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TickerSummaryMapper {
 
-    @Mapping(target = "cik", source = "cikLookup.cik")
     @Mapping(target = "companyName", source = "cikLookup.companyName")
     TickerSummaryDTO toDTO(TickerSummary entity);
 

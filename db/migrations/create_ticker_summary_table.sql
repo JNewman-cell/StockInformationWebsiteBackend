@@ -6,27 +6,32 @@
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS ticker_summary (
-    ticker VARCHAR(20) PRIMARY KEY,
+    ticker VARCHAR(20) NOT NULL,
     cik INTEGER,
-    market_cap BIGINT,
-    previous_close NUMERIC(15,2),
+    market_cap BIGINT NOT NULL,
+    previous_close NUMERIC(15,2) NOT NULL,
     pe_ratio NUMERIC(10,2),
     forward_pe_ratio NUMERIC(10,2),
     dividend_yield NUMERIC(4,2),
     payout_ratio NUMERIC(4,2),
-    fifty_day_average NUMERIC(10,2),
-    two_hundred_day_average NUMERIC(10,2),
-    CONSTRAINT ticker_summary_pkey PRIMARY KEY (ticker),
-    CONSTRAINT ticker_summary_cik_fkey FOREIGN KEY (cik) REFERENCES cik_lookup(cik) ON DELETE SET NULL,
-    CONSTRAINT ticker_summary_market_cap_positive CHECK (market_cap >= 0),
-    CONSTRAINT ticker_summary_dividend_yield_range CHECK (dividend_yield >= 0 AND dividend_yield <= 99.99),
-    CONSTRAINT ticker_summary_payout_ratio_range CHECK (payout_ratio >= 0 AND payout_ratio <= 99.99)
+    fifty_day_average NUMERIC(10,2) NOT NULL,
+    two_hundred_day_average NUMERIC(10,2) NOT NULL,
+    CONSTRAINT "idx_ticker_summary_ticker" PRIMARY KEY (ticker),
+    CONSTRAINT "cik" FOREIGN KEY (cik) REFERENCES cik_lookup(cik)
 );
 
--- Create indexes for performance optimization
-CREATE INDEX IF NOT EXISTS idx_ticker_summary_cik ON ticker_summary(cik);
-CREATE INDEX IF NOT EXISTS idx_ticker_summary_market_cap ON ticker_summary(market_cap);
-CREATE INDEX IF NOT EXISTS idx_ticker_summary_pe_ratio ON ticker_summary(pe_ratio);
+-- Indexes: include partial indexes for nullable ratio/percentage columns and a lower-case index for case-insensitive search
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_dividend_yield" ON ticker_summary(dividend_yield) WHERE dividend_yield IS NOT NULL;
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_forward_pe_ratio" ON ticker_summary(forward_pe_ratio) WHERE forward_pe_ratio IS NOT NULL;
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_payout_ratio" ON ticker_summary(payout_ratio) WHERE payout_ratio IS NOT NULL;
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_pe_ratio" ON ticker_summary(pe_ratio) WHERE pe_ratio IS NOT NULL;
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_market_cap" ON ticker_summary(market_cap);
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_previous_close" ON ticker_summary(previous_close);
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_ticker_lower" ON ticker_summary(lower(ticker::text));
+
+-- Enable row level security and create policy_1 as specified
+ALTER TABLE ticker_summary ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "policy_1" ON ticker_summary USING (true);
 
 -- Add table and column comments
 COMMENT ON TABLE ticker_summary IS 'Comprehensive stock ticker summary data including market metrics and financial ratios';

@@ -17,7 +17,7 @@ public record AutocompleteResult(
     String symbol,
 
     @Schema(description = "Name of a company", example = "Apple Inc.")
-    @NotNull(message = "Ticker symbol is required")
+    @NotNull(message = "Company name is required")
     String name,
 
     @Schema(description = "Score of a search result", example = "0.92")

@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -43,8 +43,9 @@ class TickerSummaryControllerTest {
     void testGetAllTickerSummaries() throws Exception {
         TickerSummary ticker1 = new TickerSummary("AAPL", new BigDecimal("150.00"));
         TickerSummary ticker2 = new TickerSummary("MSFT", new BigDecimal("300.00"));
-        List<TickerSummary> tickers = Arrays.asList(ticker1, ticker2);
-        Page<TickerSummary> page = new PageImpl<>(tickers, PageRequest.of(0, 20), tickers.size());
+    List<TickerSummary> tickers = List.of(ticker1, ticker2);
+    Objects.requireNonNull(tickers, "tickers must not be null for test");
+    Page<TickerSummary> page = new PageImpl<>(tickers, PageRequest.of(0, 20), tickers.size());
 
         when(tickerSummaryService.findAll(any(Pageable.class))).thenReturn(page);
 
