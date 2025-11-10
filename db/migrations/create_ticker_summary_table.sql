@@ -21,6 +21,9 @@ CREATE TABLE IF NOT EXISTS ticker_summary (
 );
 
 -- Indexes: include partial indexes for nullable ratio/percentage columns and a lower-case index for case-insensitive search
+-- Ensure pg_trgm extension is available for trigram GIN indexes (required for gin_trgm_ops)
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_dividend_yield" ON ticker_summary(dividend_yield) WHERE dividend_yield IS NOT NULL;
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_forward_pe_ratio" ON ticker_summary(forward_pe_ratio) WHERE forward_pe_ratio IS NOT NULL;
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_payout_ratio" ON ticker_summary(payout_ratio) WHERE payout_ratio IS NOT NULL;
@@ -28,6 +31,8 @@ CREATE INDEX IF NOT EXISTS "idx_ticker_summary_pe_ratio" ON ticker_summary(pe_ra
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_market_cap" ON ticker_summary(market_cap);
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_previous_close" ON ticker_summary(previous_close);
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_ticker_lower" ON ticker_summary(lower(ticker::text));
+-- Add a GIN trigram index to support fast case-insensitive trigram searches on ticker
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_ticker_lower_trgm" ON ticker_summary USING gin (lower(ticker::text) gin_trgm_ops);
 
 -- Enable row level security and create policy_1 as specified
 ALTER TABLE ticker_summary ENABLE ROW LEVEL SECURITY;
