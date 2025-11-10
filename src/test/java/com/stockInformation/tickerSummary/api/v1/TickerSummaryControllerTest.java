@@ -1,5 +1,6 @@
 package com.stockInformation.tickerSummary.api.v1;
 
+import com.stockInformation.tickerSummary.dto.TickerSummaryDTO;
 import com.stockInformation.tickerSummary.entity.TickerSummary;
 import com.stockInformation.tickerSummary.service.TickerSummaryService;
 
@@ -16,8 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -41,21 +42,31 @@ class TickerSummaryControllerTest {
     @Test
     @WithMockUser
     void testGetAllTickerSummaries() throws Exception {
-        TickerSummary ticker1 = new TickerSummary("AAPL", new BigDecimal("150.00"));
-        TickerSummary ticker2 = new TickerSummary("MSFT", new BigDecimal("300.00"));
-        List<TickerSummary> tickers = Arrays.asList(ticker1, ticker2);
-        Page<TickerSummary> page = new PageImpl<>(tickers, PageRequest.of(0, 20), tickers.size());
+        TickerSummaryDTO dto1 = new TickerSummaryDTO("AAPL", "Apple Inc.", 2000000000000L, new BigDecimal("150.00"), null, null, null, null, null, null);
+        TickerSummaryDTO dto2 = new TickerSummaryDTO("MSFT", "Microsoft Corporation", 2000000000000L, new BigDecimal("300.00"), null, null, null, null, null, null);
+        List<TickerSummaryDTO> dtos = List.of(dto1, dto2);
+        Page<TickerSummaryDTO> page = new PageImpl<>(dtos, PageRequest.of(0, 20), dtos.size());
 
-        when(tickerSummaryService.findAll(any(Pageable.class))).thenReturn(page);
+        when(tickerSummaryService.getPaginatedList(
+            any(), any(), any(), any(), any(),
+            any(), any(), any(), any(), any(), any(),
+            any(), any(), any(), any(), any(), any()
+        )).thenReturn(page);
 
-        mockMvc.perform(get("/api/v1/ticker-summary")
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("page", "0")
-                .param("size", "20"))
+                .param("pageSize", "25"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content.length()").value(2));
+                .andExpect(jsonPath("$.content.length()").value(2))
+                .andExpect(jsonPath("$.content[0].ticker").value("AAPL"))
+                .andExpect(jsonPath("$.content[1].ticker").value("MSFT"));
 
-        verify(tickerSummaryService).findAll(any(Pageable.class));
+        verify(tickerSummaryService).getPaginatedList(
+            any(), any(), any(), any(), any(),
+            any(), any(), any(), any(), any(), any(),
+            any(), any(), any(), any(), any(), any()
+        );
     }
 
     @Test
