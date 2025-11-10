@@ -43,18 +43,20 @@ class SearchServiceTest {
     }
 
     @Test
-    void testAutocompleteWithEmptyResults() {
+    void testAutocompleteWithSpecialChars() {
         // Given
-        String query = "NonExistent";
-        List<AutocompleteResult> results = Arrays.asList();
-        when(searchRepository.searchByInputIgnoreCase("nonexistent")).thenReturn(results);
+        String query = "Apple Inc.";
+        List<AutocompleteResult> results = Arrays.asList(
+            new AutocompleteResult("AAPL", "Apple Inc.", 0.99)
+        );
+        when(searchRepository.searchByInputIgnoreCase("apple%inc%")).thenReturn(results);
 
         // When
         AutocompleteResponse response = searchService.autocomplete(query);
 
         // Then
         assertThat(response.query()).isEqualTo(query);
-        assertThat(response.results()).isEmpty();
-        verify(searchRepository).searchByInputIgnoreCase("nonexistent");
+        assertThat(response.results()).isEqualTo(results);
+        verify(searchRepository).searchByInputIgnoreCase("apple%inc%");
     }
 }

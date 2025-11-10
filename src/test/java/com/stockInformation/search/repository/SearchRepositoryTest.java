@@ -5,10 +5,12 @@ import com.stockInformation.cikLookup.repository.CikLookupRepository;
 import com.stockInformation.search.dto.AutocompleteResult;
 import com.stockInformation.tickerSummary.entity.TickerSummary;
 import com.stockInformation.tickerSummary.repository.TickerSummaryRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import({SearchRepositoryImpl.class, com.stockInformation.config.QuerydslConfig.class})
-class SearchRepositoryTest {
+public class SearchRepositoryTest {
 
     @Autowired
     private SearchRepository searchRepository;
@@ -27,6 +29,27 @@ class SearchRepositoryTest {
 
     @Autowired
     private TickerSummaryRepository tickerSummaryRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @BeforeEach
+    void setUp() {
+        // Create a simple similarity function for H2 testing
+        jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS SIMILARITY DETERMINISTIC FOR \"com.stockInformation.search.repository.SearchRepositoryTest.simpleSimilarity\"");
+    }
+
+    public static double simpleSimilarity(String a, String b) {
+        if (a == null || b == null) return 0.0;
+        // Simple similarity: length of common prefix / max length
+        int minLen = Math.min(a.length(), b.length());
+        int common = 0;
+        for (int i = 0; i < minLen; i++) {
+            if (a.charAt(i) == b.charAt(i)) common++;
+            else break;
+        }
+        return (double) common / Math.max(a.length(), b.length());
+    }
 
     @Test
     void testSearchByInputIgnoreCase() {
