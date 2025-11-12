@@ -1,47 +1,60 @@
 package com.stockInformation.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
- * Security configuration that restricts access to sensitive endpoints.
- * By default the endpoints /api/v1/ticker-summary/** and /api/v1/cik-lookup/**
- * will be denied for all requests. This can be toggled with the
- * property `security.restrict.internal` (default: true).
+ * Security configuration for JWT-based authentication with Neon Auth.
  */
 @Configuration
-@EnableMethodSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${security.restrict.internal:true}")
-    private boolean restrictInternal;
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/api/public/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .bearerTokenResolver(bearerTokenResolver())
+                .jwt(jwt -> jwt
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
+            );
+        return http.build();
+    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Basic, conservative security: disable CSRF for API use and apply rules
-        http.csrf(csrf -> csrf.disable());
+    public BearerTokenResolver bearerTokenResolver() {
+        return request -> {
+            String token = request.getHeader("x-stack-access-token");
+            if (token != null) {
+                return token;
+            }
+            // Fallback to Authorization header
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                return authHeader.substring(7);
+            }
+            return null;
+        };
+    }
 
-        if (restrictInternal) {
-            http.authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/api/v1/ticker-summary/**", "/api/v1/cik-lookup/**").denyAll()
-                    .anyRequest().permitAll()
-            );
-        } else {
-            http.authorizeHttpRequests(authorize -> authorize
-                    .anyRequest().permitAll()
-            );
-        }
-
-        // No default login form or basic auth enabled here. If you need to allow
-        // internal services to access these endpoints, configure authentication
-        // and change the antMatchers above to require specific roles.
-        http.httpBasic(httpBasic -> httpBasic.disable());
-        http.formLogin(formLogin -> formLogin.disable());
-
-        return http.build();
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        // Configure claims mapping if needed
+        return converter;
     }
 }
