@@ -14,7 +14,7 @@ import java.util.Arrays;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${cors.allowed-origins:http://localhost:3000,http://localhost:4200}")
+    @Value("${cors.allowed-origins:http://localhost:3000,https://marketease-a45u.onrender.com}")
     private String allowedOriginsConfig;
 
     @Override
