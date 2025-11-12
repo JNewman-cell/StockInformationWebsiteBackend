@@ -23,7 +23,14 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/public/**").permitAll()
+                // Public endpoints that do not require an access token
+                // - Search autocomplete (used by public UI)
+                // - Ticker summary list (paginated public listing)
+                .requestMatchers(
+                    "/api/public/**",
+                    "/api/v1/search/auto-complete",
+                    "/api/v1/ticker-summary/list"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2
