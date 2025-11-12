@@ -1,6 +1,7 @@
 package com.stockInformation.tickerSummary.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -71,4 +72,31 @@ public class TickerSummaryCompanyRepositoryImpl implements TickerSummaryCompanyR
         Page<TickerSummaryDTO> page = new PageImpl<>(content, pageable, totalCount);
         return page;
 	}
+
+    @Override
+    public Optional<TickerSummaryDTO> findByTickerWithCompanyName(String ticker) {
+        QTickerSummary t = QTickerSummary.tickerSummary;
+        QCikLookup c = QCikLookup.cikLookup;
+
+        TickerSummaryDTO result = queryFactory
+            .select(Projections.constructor(
+                TickerSummaryDTO.class,
+                t.ticker,
+                c.companyName,
+                t.marketCap,
+                t.previousClose,
+                t.peRatio,
+                t.forwardPeRatio,
+                t.dividendYield,
+                t.payoutRatio,
+                t.fiftyDayAverage,
+                t.twoHundredDayAverage
+            ))
+            .from(t)
+            .leftJoin(t.cikLookup, c)
+            .where(t.ticker.equalsIgnoreCase(ticker))
+            .fetchOne();
+
+        return Optional.ofNullable(result);
+    }
 }

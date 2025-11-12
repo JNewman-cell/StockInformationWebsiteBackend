@@ -36,6 +36,14 @@ public class TickerSummaryService {
     }
 
     /**
+     * Find ticker summary DTO by ticker symbol (case-insensitive) with company name joined
+     */
+    @Transactional(readOnly = true)
+    public Optional<TickerSummaryDTO> findDTOByTicker(String ticker) {
+        return tickerSummaryRepository.findByTickerWithCompanyName(ticker.toLowerCase());
+    }
+
+    /**
      * Build a dynamic predicate from provided filters and return a paginated Page<TickerSummaryDTO>.
      * Uses Querydsl for optimized DTO projection with company name.
      */

@@ -1,7 +1,6 @@
 package com.stockInformation.tickerSummary.api.v1;
 
 import com.stockInformation.tickerSummary.dto.TickerSummaryDTO;
-import com.stockInformation.tickerSummary.entity.TickerSummary;
 import com.stockInformation.tickerSummary.service.TickerSummaryService;
 
 import org.junit.jupiter.api.Test;
@@ -12,13 +11,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -72,26 +69,146 @@ class TickerSummaryControllerTest {
     @Test
     @WithMockUser
     void testGetTickerSummaryByTicker() throws Exception {
-        TickerSummary ticker = new TickerSummary("AAPL", new BigDecimal("150.00"));
+        TickerSummaryDTO tickerDTO = new TickerSummaryDTO("AAPL", new BigDecimal("150.00"));
 
-        when(tickerSummaryService.findByTicker("AAPL")).thenReturn(Optional.of(ticker));
+        when(tickerSummaryService.findDTOByTicker("AAPL")).thenReturn(Optional.of(tickerDTO));
 
         mockMvc.perform(get("/api/v1/ticker-summary/AAPL"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticker").value("AAPL"))
                 .andExpect(jsonPath("$.previousClose").value(150.00));
 
-        verify(tickerSummaryService).findByTicker("AAPL");
+        verify(tickerSummaryService).findDTOByTicker("AAPL");
     }
 
     @Test
     @WithMockUser
     void testGetTickerSummaryByTickerNotFound() throws Exception {
-        when(tickerSummaryService.findByTicker("INVALID")).thenReturn(Optional.empty());
+        when(tickerSummaryService.findDTOByTicker("INVALID")).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/v1/ticker-summary/INVALID"))
                 .andExpect(status().isNotFound());
 
-        verify(tickerSummaryService).findByTicker("INVALID");
+        verify(tickerSummaryService).findDTOByTicker("INVALID");
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidPage() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("page", "-1"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidPageSize() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("pageSize", "100"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidSortOrder() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("sortOrder", "INVALID"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidSortBy() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("sortBy", "invalid_field"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMinMarketCap() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("minMarketCap", "0"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMaxMarketCap() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("maxMarketCap", "-1"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMinPreviousClose() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("minPreviousClose", "0"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMaxPreviousClose() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("maxPreviousClose", "-1"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMinDividendYield() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("minDividendYield", "-0.01"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMaxDividendYield() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("maxDividendYield", "1000"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMinPayoutRatio() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("minPayoutRatio", "-0.01"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetTickerSummaryPaginatedListInvalidMaxPayoutRatio() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("maxPayoutRatio", "1000"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
     }
 }
