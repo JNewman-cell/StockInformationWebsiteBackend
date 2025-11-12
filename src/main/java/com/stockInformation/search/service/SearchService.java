@@ -5,6 +5,7 @@ import com.stockInformation.search.dto.AutocompleteResponse;
 import com.stockInformation.search.repository.SearchRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class SearchService {
      *  - Error modes: returns empty results list if nothing found
      */
     @Transactional(readOnly = true)
+    @Cacheable(value = "autocomplete", key = "#query.toLowerCase()")
     public AutocompleteResponse autocomplete(String query) {
         // Handle null/blank queries quickly
         if (query == null || query.isBlank()) {

@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.stockInformation.tickerSummary.dto.TickerSummaryDTO;
-import com.stockInformation.tickerSummary.entity.TickerSummary;
 import com.stockInformation.tickerSummary.service.TickerSummaryService;
 import com.stockInformation.common.dto.PageResponse;
 
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.Set;
+
+import com.stockInformation.tickerSummary.utils.TickerSummaryValidationUtils;
 
 @RestController
 @RequestMapping("/api/v1/ticker-summary")
@@ -20,25 +20,14 @@ import java.util.Set;
 public class TickerSummaryController {
 
     private final TickerSummaryService tickerSummaryService;
-    private final TickerSummaryMapper tickerSummaryMapper;
-    private static final Set<Integer> PAGE_SIZES = Set.of(10, 25, 50);
-    private static final Set<String> ALLOWED_SORT_FIELDS = Set.of(
-        "ticker", "company_name", "previous_close",
-        "pe", "forward_pe", "dividend_yield",
-        "market_cap", "payout_ratio"
-    );
-    private static final Set<String> SORT_DIRECTIONS = Set.of(
-        "ASC", "DESC"
-    );
     
     /**
      * Get ticker summary by ticker symbol
      */
     @GetMapping("/{ticker}")
     public ResponseEntity<TickerSummaryDTO> getTickerSummaryByTicker(@PathVariable String ticker) {
-        Optional<TickerSummary> tickerSummary = tickerSummaryService.findByTicker(ticker);
-        return tickerSummary
-                .map(tickerSummaryMapper::toDTO)
+        Optional<TickerSummaryDTO> tickerSummaryDTO = tickerSummaryService.findDTOByTicker(ticker);
+        return tickerSummaryDTO
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -66,22 +55,49 @@ public class TickerSummaryController {
         @RequestParam(required = false) BigDecimal minPayoutRatio,
         @RequestParam(required = false) BigDecimal maxPayoutRatio
     ) {
-        // Validate controller-level inputs (controller enforces defaults and bounds)
-        if (page < 0) {
+        if (!TickerSummaryValidationUtils.isValidPage(page)) {
             return ResponseEntity.badRequest().build();
         }
-        if (!PAGE_SIZES.contains(pageSize)) {
-            return ResponseEntity.badRequest().build();
-        }
-        // Validate sortOrder (must be ASC or DESC)
-        if (!SORT_DIRECTIONS.contains(sortOrder)) {
+        if (!TickerSummaryValidationUtils.isValidPageSize(pageSize)) {
             return ResponseEntity.badRequest().build();
         }
 
-        // Validate sortBy: allow "ticker" or any enum value (case/format tolerant)
-        if (!ALLOWED_SORT_FIELDS.contains(sortBy)) {
+        if (!TickerSummaryValidationUtils.isValidSortOrder(sortOrder)) {
             return ResponseEntity.badRequest().build();
         }
+        if (!TickerSummaryValidationUtils.isValidSortBy(sortBy)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!TickerSummaryValidationUtils.isValidMarketCap(minMarketCap)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (!TickerSummaryValidationUtils.isValidMarketCap(maxMarketCap)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!TickerSummaryValidationUtils.isValidPreviousClose(minPreviousClose)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (!TickerSummaryValidationUtils.isValidPreviousClose(maxPreviousClose)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!TickerSummaryValidationUtils.isValidPercentage(minDividendYield)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (!TickerSummaryValidationUtils.isValidPercentage(maxDividendYield)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!TickerSummaryValidationUtils.isValidPercentage(minPayoutRatio)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (!TickerSummaryValidationUtils.isValidPercentage(maxPayoutRatio)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // PE ratios can be negative (no validation needed)
 
         Page<TickerSummaryDTO> dtos = tickerSummaryService.getPaginatedList(
             query, page, pageSize, sortBy, sortOrder,
