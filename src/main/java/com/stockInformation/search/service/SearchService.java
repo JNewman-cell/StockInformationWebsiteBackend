@@ -27,18 +27,15 @@ public class SearchService {
      *  - Error modes: returns empty results list if nothing found
      */
     @Transactional(readOnly = true)
-    @Cacheable(value = "autocomplete", key = "#query.toLowerCase()")
+    @Cacheable(value = "autocomplete", key = "#query == null ? '' : #query.toLowerCase()")
     public AutocompleteResponse autocomplete(String query) {
         // Handle null/blank queries quickly
         if (query == null || query.isBlank()) {
             return new AutocompleteResponse(query, List.of());
         }
 
-        // Lowercase the input for the SQL query which expects lowercase comparisons
-        String lowered = query.toLowerCase();
-
         // Sanitize the query for SQL pattern matching (moved to utils)
-        String processed = utils.sanitizeQueryForSql(lowered);
+        String processed = utils.normalizeCompanyNameForSearch(query);
 
         List<AutocompleteResult> results = searchRepository.searchByInputIgnoreCase(processed);
         return new AutocompleteResponse(query, results);
