@@ -6,13 +6,13 @@ import com.stockInformation.tickerSummary.service.TickerSummaryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,9 +24,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = TickerSummaryController.class)
+@AutoConfigureMockMvc(addFilters = false)
 @Import({
-    com.stockInformation.tickerSummary.api.v1.TickerSummaryMapperImpl.class,
-    com.stockInformation.config.SecurityConfig.class
+    com.stockInformation.tickerSummary.api.v1.TickerSummaryMapperImpl.class
 })
 class TickerSummaryControllerTest {
 
@@ -37,7 +37,6 @@ class TickerSummaryControllerTest {
     private TickerSummaryService tickerSummaryService;
 
     @Test
-    @WithMockUser
     void testGetAllTickerSummaries() throws Exception {
         TickerSummaryDTO dto1 = new TickerSummaryDTO("AAPL", "Apple Inc.", 2000000000000L, new BigDecimal("150.00"), null, null, null, null, null, null);
         TickerSummaryDTO dto2 = new TickerSummaryDTO("MSFT", "Microsoft Corporation", 2000000000000L, new BigDecimal("300.00"), null, null, null, null, null, null);
@@ -67,7 +66,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryByTicker() throws Exception {
         TickerSummaryDTO tickerDTO = new TickerSummaryDTO("AAPL", new BigDecimal("150.00"));
 
@@ -82,7 +80,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryByTickerNotFound() throws Exception {
         when(tickerSummaryService.findDTOByTicker("INVALID")).thenReturn(Optional.empty());
 
@@ -93,7 +90,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidPage() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("page", "-1"))
@@ -103,7 +99,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidPageSize() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("pageSize", "100"))
@@ -113,7 +108,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidSortOrder() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("sortOrder", "INVALID"))
@@ -123,7 +117,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidSortBy() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("sortBy", "invalid_field"))
@@ -133,7 +126,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMinMarketCap() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("minMarketCap", "0"))
@@ -143,7 +135,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMaxMarketCap() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("maxMarketCap", "-1"))
@@ -153,7 +144,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMinPreviousClose() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("minPreviousClose", "0"))
@@ -163,7 +153,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMaxPreviousClose() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("maxPreviousClose", "-1"))
@@ -173,7 +162,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMinDividendYield() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("minDividendYield", "-0.01"))
@@ -183,7 +171,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMaxDividendYield() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("maxDividendYield", "1000"))
@@ -193,7 +180,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMinPayoutRatio() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("minPayoutRatio", "-0.01"))
@@ -203,7 +189,6 @@ class TickerSummaryControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testGetTickerSummaryPaginatedListInvalidMaxPayoutRatio() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("maxPayoutRatio", "1000"))

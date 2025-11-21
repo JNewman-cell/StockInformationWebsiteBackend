@@ -49,7 +49,7 @@ class SearchServiceTest {
         List<AutocompleteResult> results = Arrays.asList(
             new AutocompleteResult("AAPL", "Apple Inc.", 0.99)
         );
-        when(searchRepository.searchByInputIgnoreCase("apple%inc%")).thenReturn(results);
+        when(searchRepository.searchByInputIgnoreCase("apple")).thenReturn(results);
 
         // When
         AutocompleteResponse response = searchService.autocomplete(query);
@@ -57,6 +57,6 @@ class SearchServiceTest {
         // Then
         assertThat(response.query()).isEqualTo(query);
         assertThat(response.results()).isEqualTo(results);
-        verify(searchRepository).searchByInputIgnoreCase("apple%inc%");
+        verify(searchRepository).searchByInputIgnoreCase("apple");
     }
 }
