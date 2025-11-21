@@ -49,9 +49,9 @@ class TickerSummaryServiceTest {
     void testFindAllWithPageable() {
         // Given
         Pageable pageable = PageRequest.of(0, 20);
-    List<TickerSummary> tickerSummaries = List.of(new TickerSummary("AAPL", new BigDecimal("150.00")));
-    Objects.requireNonNull(tickerSummaries, "tickerSummaries must not be null for test");
-    Page<TickerSummary> page = new PageImpl<>(tickerSummaries, pageable, 1);
+        List<TickerSummary> tickerSummaries = List.of(new TickerSummary("AAPL", new BigDecimal("150.00")));
+        Objects.requireNonNull(tickerSummaries, "tickerSummaries must not be null for test");
+        Page<TickerSummary> page = new PageImpl<>(tickerSummaries, pageable, 1);
         when(tickerSummaryRepository.findAll(pageable)).thenReturn(page);
 
         // When

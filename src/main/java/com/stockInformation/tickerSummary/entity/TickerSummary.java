@@ -29,7 +29,7 @@ public class TickerSummary {
     private CikLookup cikLookup;
 
     @Min(value = 0, message = "Market cap must be non-negative")
-    @Column(name = "market_cap")
+    @Column(name = "market_cap", nullable = false)
     private Long marketCap;
 
     @NotNull(message = "Previous close is required")
@@ -49,25 +49,25 @@ public class TickerSummary {
     private BigDecimal forwardPeRatio;
 
     @DecimalMin(value = "0.0", message = "Dividend yield must be non-negative")
-    @DecimalMax(value = "99.99", message = "Dividend yield cannot exceed 99.99%")
-    @Digits(integer = 2, fraction = 2, message = "Dividend yield format is invalid")
-    @Column(name = "dividend_yield", precision = 4, scale = 2)
+    @DecimalMax(value = "999.99", message = "Dividend yield cannot exceed 999.99%")
+    @Digits(integer = 3, fraction = 2, message = "Dividend yield format is invalid")
+    @Column(name = "dividend_yield", precision = 5, scale = 2)
     private BigDecimal dividendYield;
 
     @DecimalMin(value = "0.0", message = "Payout ratio must be non-negative")
-    @DecimalMax(value = "99.99", message = "Payout ratio cannot exceed 99.99%")
-    @Digits(integer = 2, fraction = 2, message = "Payout ratio format is invalid")
-    @Column(name = "payout_ratio", precision = 4, scale = 2)
+    @DecimalMax(value = "999.99", message = "Payout ratio cannot exceed 999.99%")
+    @Digits(integer = 3, fraction = 2, message = "Payout ratio format is invalid")
+    @Column(name = "payout_ratio", precision = 5, scale = 2)
     private BigDecimal payoutRatio;
 
     @DecimalMin(value = "0.0", message = "50-day average must be non-negative")
     @Digits(integer = 8, fraction = 2, message = "50-day average format is invalid")
-    @Column(name = "fifty_day_average", precision = 10, scale = 2)
+    @Column(name = "fifty_day_average", nullable = false, precision = 10, scale = 2)
     private BigDecimal fiftyDayAverage;
 
     @DecimalMin(value = "0.0", message = "200-day average must be non-negative")
     @Digits(integer = 8, fraction = 2, message = "200-day average format is invalid")
-    @Column(name = "two_hundred_day_average", precision = 10, scale = 2)
+    @Column(name = "two_hundred_day_average", nullable = false, precision = 10, scale = 2)
     private BigDecimal twoHundredDayAverage;
 
     // Custom constructor for common use case

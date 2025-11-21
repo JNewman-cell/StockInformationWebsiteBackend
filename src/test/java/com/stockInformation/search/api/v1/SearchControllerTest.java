@@ -6,10 +6,9 @@ import com.stockInformation.search.service.SearchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = SearchController.class)
-@Import({
-    com.stockInformation.config.SecurityConfig.class
-})
+@AutoConfigureMockMvc(addFilters = false)
 class SearchControllerTest {
 
     @Autowired
@@ -31,7 +28,6 @@ class SearchControllerTest {
     private SearchService searchService;
 
     @Test
-    @WithMockUser
     void testSearchTickerSummaries() throws Exception {
         // Given
         String query = "apple";
@@ -54,7 +50,6 @@ class SearchControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testSearchTickerSummariesEmptyResults() throws Exception {
         // Given
         String query = "nonexistent";

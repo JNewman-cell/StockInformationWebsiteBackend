@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.stockInformation.cikLookup.dto.CikLookupDTO;
 import com.stockInformation.cikLookup.entity.CikLookup;
 import com.stockInformation.cikLookup.service.CikLookupService;
+import com.stockInformation.cikLookup.api.v1.CikLookupMapper;
 
 import java.util.Optional;
 
