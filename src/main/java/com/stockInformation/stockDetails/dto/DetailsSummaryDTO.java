@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * Data Transfer Object for TickerSummary API responses and requests
  */
 @Schema(description = "Stock ticker summary with financial metrics and company information")
-public record SummaryDTO(
+public record DetailsSummaryDTO(
 
     @Schema(description = "Stock ticker symbol", example = "AAPL", maxLength = 20)
     @NotBlank(message = "Ticker symbol is required")
@@ -98,7 +98,7 @@ public record SummaryDTO(
 ) {
 
     // Custom constructor for test convenience
-    public SummaryDTO(String ticker, BigDecimal previousClose) {
+    public DetailsSummaryDTO(String ticker, BigDecimal previousClose) {
         this(ticker, null, null, previousClose, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 }

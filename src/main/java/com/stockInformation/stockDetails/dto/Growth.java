@@ -3,6 +3,7 @@ package com.stockInformation.stockDetails.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Data Transfer Object for stock growth metrics
@@ -12,6 +13,9 @@ public record Growth(
 
     @Schema(description = "Earnings per share growth rate", example = "15.7")
     BigDecimal earningsGrowth,
+
+    @Schema(description = "Future earnings per share growth rate", example = "15.7")
+    BigDecimal forwardEarningsGrowth,
 
     @Schema(description = "Revenue growth rate", example = "10.2")
     BigDecimal revenueGrowth,
@@ -26,4 +30,9 @@ public record Growth(
     @DecimalMin(value = "0.0", message = "PEG ratio must be non-negative")
     BigDecimal peg
 
-) {}
+) {
+    public static Growth of(BigDecimal earningsGrowth, BigDecimal revenueGrowth, BigDecimal trailingEps, BigDecimal forwardEps, BigDecimal peg) {
+        BigDecimal forwardEarningsGrowth = forwardEps.subtract(trailingEps).multiply(BigDecimal.valueOf(100)).divide(trailingEps, 2, RoundingMode.HALF_UP);
+        return new Growth(earningsGrowth, forwardEarningsGrowth, revenueGrowth, trailingEps, forwardEps, peg);
+    }
+}

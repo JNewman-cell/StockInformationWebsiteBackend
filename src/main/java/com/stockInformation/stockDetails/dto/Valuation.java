@@ -33,12 +33,10 @@ public record Valuation(
 
     @Schema(description = "50-day moving average price", example = "145.67")
     @NotNull(message = "50-day average is required")
-    @DecimalMin(value = "0.0", message = "50-day average must be non-negative")
-    BigDecimal fiftyDayAverage,
+    MovingAverage fiftyDayAverage,
 
     @Schema(description = "200-day moving average price", example = "140.23")
     @NotNull(message = "200-day average is required")
-    @DecimalMin(value = "0.0", message = "200-day average must be non-negative")
-    BigDecimal twoHundredDayAverage
+    MovingAverage twoHundredDayAverage
 
 ) {}

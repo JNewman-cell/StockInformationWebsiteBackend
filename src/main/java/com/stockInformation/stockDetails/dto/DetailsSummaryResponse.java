@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
  * Data Transfer Object for stock summary response with categorized metrics
  */
 @Schema(description = "Stock summary response with valuations, margin, growth, and dividend metrics")
-public record SummaryResponse(
+public record DetailsSummaryResponse(
 
     @Schema(description = "Valuation metrics")
     @NotNull(message = "Valuation is required")
