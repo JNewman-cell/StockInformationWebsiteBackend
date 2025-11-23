@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS ticker_overview (
     gross_margin NUMERIC(5,2),
     operating_margin NUMERIC(5,2),
     profit_margin NUMERIC(5,2),
+    ebitda_margin NUMERIC(5,2),
     earnings_growth NUMERIC(9,2),
     revenue_growth NUMERIC(10,2),
     trailing_eps NUMERIC(7,2),

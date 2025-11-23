@@ -36,6 +36,12 @@ public class TickerOverview {
     @Column(name = "gross_margin", precision = 5, scale = 2)
     private BigDecimal grossMargin;
 
+    @DecimalMin(value = "0.0", message = "EBITDA margin must be non-negative")
+    @DecimalMax(value = "999.99", message = "EBITDA margin cannot exceed 999.99%")
+    @Digits(integer = 3, fraction = 2, message = "EBITDA margin format is invalid")
+    @Column(name = "ebitda_margin", precision = 5, scale = 2)
+    private BigDecimal ebitdaMargin;
+
     @DecimalMin(value = "0.0", message = "Operating margin must be non-negative")
     @DecimalMax(value = "999.99", message = "Operating margin cannot exceed 999.99%")
     @Digits(integer = 3, fraction = 2, message = "Operating margin format is invalid")

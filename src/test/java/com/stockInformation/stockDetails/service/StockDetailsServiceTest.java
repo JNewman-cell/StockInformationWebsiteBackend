@@ -39,6 +39,7 @@ class StockDetailsServiceTest {
         summary.setTwoHundredDayAverage(BigDecimal.valueOf(140.00));
         TickerOverview overview = new TickerOverview();
         overview.setTicker(ticker);
+        overview.setEbitdaMargin(BigDecimal.valueOf(28.50));
         overview.setEarningsGrowth(BigDecimal.valueOf(15.70));
         overview.setRevenueGrowth(BigDecimal.valueOf(10.20));
         overview.setTrailingEps(BigDecimal.valueOf(6.15));
@@ -100,6 +101,8 @@ class StockDetailsServiceTest {
         summary.setTwoHundredDayAverage(BigDecimal.valueOf(140.00));
         TickerOverview overview = new TickerOverview();
         overview.setTicker("AAPL");
+        overview.setEbitdaMargin(BigDecimal.valueOf(28.50));
+        overview.setEbitdaMargin(BigDecimal.valueOf(28.50));
         overview.setEarningsGrowth(BigDecimal.valueOf(15.70));
         overview.setRevenueGrowth(BigDecimal.valueOf(10.20));
         overview.setTrailingEps(BigDecimal.valueOf(6.15));

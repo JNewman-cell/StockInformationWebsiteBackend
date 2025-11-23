@@ -31,6 +31,7 @@ class StockDetailsTransformerTest {
         overview.setGrossMargin(BigDecimal.valueOf(38.50));
         overview.setOperatingMargin(BigDecimal.valueOf(25.30));
         overview.setProfitMargin(BigDecimal.valueOf(20.10));
+        overview.setEbitdaMargin(BigDecimal.valueOf(28.50));
         overview.setEarningsGrowth(BigDecimal.valueOf(15.70));
         overview.setRevenueGrowth(BigDecimal.valueOf(10.20));
         overview.setTrailingEps(BigDecimal.valueOf(6.15));
@@ -69,6 +70,7 @@ class StockDetailsTransformerTest {
         assertThat(margins.grossMargin()).isEqualByComparingTo(BigDecimal.valueOf(38.50));
         assertThat(margins.operatingMargin()).isEqualByComparingTo(BigDecimal.valueOf(25.30));
         assertThat(margins.profitMargin()).isEqualByComparingTo(BigDecimal.valueOf(20.10));
+        assertThat(margins.ebitdaMargin()).isEqualByComparingTo(BigDecimal.valueOf(28.50));
 
         // Check growth
         Growth growth = response.growth();
