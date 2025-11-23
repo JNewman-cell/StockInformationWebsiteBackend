@@ -10,7 +10,8 @@ public class TickerSummaryValidationUtils {
     public static final Set<String> ALLOWED_SORT_FIELDS = Set.of(
         "ticker", "company_name", "previous_close",
         "pe", "forward_pe", "dividend_yield",
-        "market_cap", "payout_ratio"
+        "market_cap", "payout_ratio",
+        "annual_dividend_growth"
     );
 
     public static final Set<String> SORT_DIRECTIONS = Set.of(

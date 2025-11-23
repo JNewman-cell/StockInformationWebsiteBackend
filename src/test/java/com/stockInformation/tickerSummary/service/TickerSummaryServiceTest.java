@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.stockInformation.tickerSummary.entity.TickerSummary;
+import com.stockInformation.tickerSummary.dto.TickerSummaryDTO;
 import com.stockInformation.tickerSummary.repository.TickerSummaryRepository;
 
 import java.math.BigDecimal;
@@ -60,5 +61,27 @@ class TickerSummaryServiceTest {
         // Then
         assertThat(result).isEqualTo(page);
         verify(tickerSummaryRepository).findAll(pageable);
+    }
+
+    @Test
+    void testGetPaginatedListWithAnnualDividendGrowthFilter() {
+        // Given
+        Pageable pageable = PageRequest.of(0, 20);
+        List<TickerSummaryDTO> content = List.of(new TickerSummaryDTO("AAPL", new BigDecimal("150.00")));
+        Page<TickerSummaryDTO> page = new PageImpl<>(content, pageable, 1);
+
+        when(tickerSummaryRepository.findAllWithCompanyName(any(), any(Pageable.class))).thenReturn(page);
+
+        // When
+        Page<TickerSummaryDTO> result = tickerSummaryService.getPaginatedList(
+            null, 0, 20, "ticker", "ASC",
+            null, null, null, null, null, null,
+            null, null, null, null, null, null,
+            new BigDecimal("2.5"), null
+        );
+
+        // Then
+        assertThat(result).isEqualTo(page);
+        verify(tickerSummaryRepository).findAllWithCompanyName(any(), any(Pageable.class));
     }
 }

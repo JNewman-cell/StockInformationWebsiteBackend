@@ -45,6 +45,16 @@ public record TickerSummaryDTO(
     @DecimalMax(value = "99.99", message = "Payout ratio cannot exceed 99.99%")
     BigDecimal payoutRatio,
 
+    @Schema(description = "Annual dividend growth as percentage", example = "5.25", maximum = "999.99")
+    @DecimalMin(value = "0.0", message = "Annual dividend growth must be non-negative")
+    @DecimalMax(value = "999.99", message = "Annual dividend growth cannot exceed 999.99%")
+    BigDecimal annualDividendGrowth,
+
+    @Schema(description = "Five-year average dividend yield as percentage", example = "2.05", maximum = "999.99")
+    @DecimalMin(value = "0.0", message = "Five-year average dividend yield must be non-negative")
+    @DecimalMax(value = "999.99", message = "Five-year average dividend yield cannot exceed 999.99%")
+    BigDecimal fiveYearAvgDividendYield,
+
     @Schema(description = "50-day moving average price", example = "145.67")
     @DecimalMin(value = "0.0", message = "50-day average must be non-negative")
     BigDecimal fiftyDayAverage,
@@ -57,6 +67,6 @@ public record TickerSummaryDTO(
 
     // Custom constructor for test convenience
     public TickerSummaryDTO(String ticker, BigDecimal previousClose) {
-        this(ticker, null, null, previousClose, null, null, null, null, null, null);
+        this(ticker, null, null, previousClose, null, null, null, null, null, null, null, null);
     }
 }
