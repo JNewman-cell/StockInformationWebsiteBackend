@@ -23,6 +23,7 @@ public final class SortOrderTransformer {
             case "peratio", "pe", "pe_ratio" -> applyNullHandling(new OrderSpecifier<>(direction, t.peRatio), order.isAscending());
             case "forwardperatio", "forward_pe", "forward_pe_ratio" -> applyNullHandling(new OrderSpecifier<>(direction, t.forwardPeRatio), order.isAscending());
             case "dividendyield", "dividend_yield" -> applyNullHandling(new OrderSpecifier<>(direction, t.dividendYield), order.isAscending());
+            case "annualdividendgrowth", "annual_dividend_growth" -> applyNullHandling(new OrderSpecifier<>(direction, t.annualDividendGrowth), order.isAscending());
             case "marketcap", "market_cap" -> new OrderSpecifier<>(direction, t.marketCap);
             case "payoutratio", "payout_ratio" -> applyNullHandling(new OrderSpecifier<>(direction, t.payoutRatio), order.isAscending());
             case "fiftydayaverage", "fifty_day_average" -> new OrderSpecifier<>(direction, t.fiftyDayAverage);

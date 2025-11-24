@@ -65,7 +65,9 @@ public class TickerSummaryService {
             Long minMarketCap,
             Long maxMarketCap,
             BigDecimal minPayoutRatio,
-            BigDecimal maxPayoutRatio
+            BigDecimal maxPayoutRatio,
+            BigDecimal minAnnualDividendGrowth,
+            BigDecimal maxAnnualDividendGrowth
     ) {
         // Defensive null-checks to satisfy null-safety expectations from callers
         Objects.requireNonNull(page, "page must not be null");
@@ -122,6 +124,13 @@ public class TickerSummaryService {
         }
         if (maxPayoutRatio != null) {
             predicates.and(t.payoutRatio.loe(maxPayoutRatio));
+        }
+
+        if (minAnnualDividendGrowth != null) {
+            predicates.and(t.annualDividendGrowth.goe(minAnnualDividendGrowth));
+        }
+        if (maxAnnualDividendGrowth != null) {
+            predicates.and(t.annualDividendGrowth.loe(maxAnnualDividendGrowth));
         }
 
         // Build pageable with sort

@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS ticker_summary (
     forward_pe_ratio NUMERIC(10,2),
     dividend_yield NUMERIC(5,2),
     payout_ratio NUMERIC(5,2),
+    annual_dividend_growth NUMERIC(5,2),
+    five_year_avg_dividend_yield NUMERIC(5,2),
     fifty_day_average NUMERIC(10,2) NOT NULL,
     two_hundred_day_average NUMERIC(10,2) NOT NULL,
     CONSTRAINT "idx_ticker_summary_ticker" PRIMARY KEY (ticker),
@@ -28,6 +30,7 @@ CREATE INDEX IF NOT EXISTS "idx_ticker_summary_dividend_yield" ON ticker_summary
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_forward_pe_ratio" ON ticker_summary(forward_pe_ratio) WHERE forward_pe_ratio IS NOT NULL;
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_payout_ratio" ON ticker_summary(payout_ratio) WHERE payout_ratio IS NOT NULL;
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_pe_ratio" ON ticker_summary(pe_ratio) WHERE pe_ratio IS NOT NULL;
+CREATE INDEX IF NOT EXISTS "idx_ticker_summary_annual_dividend_growth" ON ticker_summary(annual_dividend_growth);
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_market_cap" ON ticker_summary(market_cap);
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_previous_close" ON ticker_summary(previous_close);
 CREATE INDEX IF NOT EXISTS "idx_ticker_summary_ticker_lower" ON ticker_summary(lower(ticker::text));
@@ -49,3 +52,5 @@ COMMENT ON COLUMN ticker_summary.dividend_yield IS 'Dividend yield as percentage
 COMMENT ON COLUMN ticker_summary.payout_ratio IS 'Dividend payout ratio as percentage (0-99.99)';
 COMMENT ON COLUMN ticker_summary.fifty_day_average IS '50-day moving average price';
 COMMENT ON COLUMN ticker_summary.two_hundred_day_average IS '200-day moving average price';
+COMMENT ON COLUMN ticker_summary.annual_dividend_growth IS 'Annual dividend growth rate as a percentage (0-999.99)';
+COMMENT ON COLUMN ticker_summary.five_year_avg_dividend_yield IS 'Five-year average dividend yield as percentage (0-999.99)';

@@ -38,15 +38,15 @@ class TickerSummaryControllerTest {
 
     @Test
     void testGetAllTickerSummaries() throws Exception {
-        TickerSummaryDTO dto1 = new TickerSummaryDTO("AAPL", "Apple Inc.", 2000000000000L, new BigDecimal("150.00"), null, null, null, null, null, null);
-        TickerSummaryDTO dto2 = new TickerSummaryDTO("MSFT", "Microsoft Corporation", 2000000000000L, new BigDecimal("300.00"), null, null, null, null, null, null);
+        TickerSummaryDTO dto1 = new TickerSummaryDTO("AAPL", "Apple Inc.", 2000000000000L, new BigDecimal("150.00"), null, null, null, null, null, null, null, null);
+        TickerSummaryDTO dto2 = new TickerSummaryDTO("MSFT", "Microsoft Corporation", 2000000000000L, new BigDecimal("300.00"), null, null, null, null, null, null, null, null);
         List<TickerSummaryDTO> dtos = List.of(dto1, dto2);
         Page<TickerSummaryDTO> page = new PageImpl<>(dtos, PageRequest.of(0, 20), dtos.size());
 
         when(tickerSummaryService.getPaginatedList(
             any(), any(), any(), any(), any(),
             any(), any(), any(), any(), any(), any(),
-            any(), any(), any(), any(), any(), any()
+            any(), any(), any(), any(), any(), any(), any(), any()
         )).thenReturn(page);
 
         mockMvc.perform(get("/api/v1/ticker-summary/list")
@@ -61,7 +61,7 @@ class TickerSummaryControllerTest {
         verify(tickerSummaryService).getPaginatedList(
             any(), any(), any(), any(), any(),
             any(), any(), any(), any(), any(), any(),
-            any(), any(), any(), any(), any(), any()
+            any(), any(), any(), any(), any(), any(), any(), any()
         );
     }
 
@@ -192,6 +192,24 @@ class TickerSummaryControllerTest {
     void testGetTickerSummaryPaginatedListInvalidMaxPayoutRatio() throws Exception {
         mockMvc.perform(get("/api/v1/ticker-summary/list")
                 .param("maxPayoutRatio", "1000"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    void testGetTickerSummaryPaginatedListInvalidMinAnnualDividendGrowth() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("minAnnualDividendGrowth", "-0.01"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(tickerSummaryService);
+    }
+
+    @Test
+    void testGetTickerSummaryPaginatedListInvalidMaxAnnualDividendGrowth() throws Exception {
+        mockMvc.perform(get("/api/v1/ticker-summary/list")
+                .param("maxAnnualDividendGrowth", "1000"))
                 .andExpect(status().isBadRequest());
 
         verifyNoInteractions(tickerSummaryService);

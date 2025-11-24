@@ -27,7 +27,8 @@ public class StockDetailsTransformer {
 		Margins margins = new Margins(
 			overview.getGrossMargin(),
 			overview.getOperatingMargin(),
-			overview.getProfitMargin()
+			overview.getProfitMargin(),
+			overview.getEbitdaMargin()
 		);
 
 		Growth growth = Growth.of(

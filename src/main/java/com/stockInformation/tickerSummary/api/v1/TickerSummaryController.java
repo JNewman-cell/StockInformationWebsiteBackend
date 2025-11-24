@@ -54,6 +54,8 @@ public class TickerSummaryController {
         @RequestParam(required = false) Long maxMarketCap,
         @RequestParam(required = false) BigDecimal minPayoutRatio,
         @RequestParam(required = false) BigDecimal maxPayoutRatio
+        ,@RequestParam(required = false) BigDecimal minAnnualDividendGrowth,
+        @RequestParam(required = false) BigDecimal maxAnnualDividendGrowth
     ) {
         if (!TickerSummaryValidationUtils.isValidPage(page)) {
             return ResponseEntity.badRequest().build();
@@ -97,6 +99,13 @@ public class TickerSummaryController {
             return ResponseEntity.badRequest().build();
         }
 
+        if (!TickerSummaryValidationUtils.isValidPercentage(minAnnualDividendGrowth)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (!TickerSummaryValidationUtils.isValidPercentage(maxAnnualDividendGrowth)) {
+            return ResponseEntity.badRequest().build();
+        }
+
         // PE ratios can be negative (no validation needed)
 
         Page<TickerSummaryDTO> dtos = tickerSummaryService.getPaginatedList(
@@ -107,6 +116,7 @@ public class TickerSummaryController {
             minDividendYield, maxDividendYield,
             minMarketCap, maxMarketCap,
             minPayoutRatio, maxPayoutRatio
+            ,minAnnualDividendGrowth, maxAnnualDividendGrowth
         );
 
         PageResponse<TickerSummaryDTO> resp = new PageResponse<>(

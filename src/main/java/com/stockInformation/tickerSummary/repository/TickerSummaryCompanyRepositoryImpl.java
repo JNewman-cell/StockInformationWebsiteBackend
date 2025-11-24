@@ -48,6 +48,8 @@ public class TickerSummaryCompanyRepositoryImpl implements TickerSummaryCompanyR
                 t.forwardPeRatio,
                 t.dividendYield,
                 t.payoutRatio,
+                t.annualDividendGrowth,
+                t.fiveYearAvgDividendYield,
                 t.fiftyDayAverage,
                 t.twoHundredDayAverage
             ))
@@ -89,6 +91,8 @@ public class TickerSummaryCompanyRepositoryImpl implements TickerSummaryCompanyR
                 t.forwardPeRatio,
                 t.dividendYield,
                 t.payoutRatio,
+                t.annualDividendGrowth,
+                t.fiveYearAvgDividendYield,
                 t.fiftyDayAverage,
                 t.twoHundredDayAverage
             ))

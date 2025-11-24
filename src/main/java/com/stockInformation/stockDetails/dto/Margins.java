@@ -23,6 +23,12 @@ public record Margins(
     @Schema(description = "Net profit margin as percentage", example = "20.1", maximum = "999.99")
     @DecimalMin(value = "0.0", message = "Profit margin must be non-negative")
     @DecimalMax(value = "999.99", message = "Profit margin cannot exceed 999.99%")
-    BigDecimal profitMargin
+    BigDecimal profitMargin,
+
+    
+    @Schema(description = "EBITDA margin as percentage", example = "28.5", maximum = "999.99")
+    @DecimalMin(value = "0.0", message = "EBITDA margin must be non-negative")
+    @DecimalMax(value = "999.99", message = "EBITDA margin cannot exceed 999.99%")
+    BigDecimal ebitdaMargin
 
 ) {}

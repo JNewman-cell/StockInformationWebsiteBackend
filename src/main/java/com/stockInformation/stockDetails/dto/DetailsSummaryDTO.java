@@ -69,6 +69,11 @@ public record DetailsSummaryDTO(
     @DecimalMax(value = "999.99", message = "Gross margin cannot exceed 999.99%")
     BigDecimal grossMargin,
 
+    @Schema(description = "EBITDA margin as percentage", example = "28.5", maximum = "999.99")
+    @DecimalMin(value = "0.0", message = "EBITDA margin must be non-negative")
+    @DecimalMax(value = "999.99", message = "EBITDA margin cannot exceed 999.99%")
+    BigDecimal ebitdaMargin,
+
     @Schema(description = "Operating profit margin as percentage", example = "25.3", maximum = "999.99")
     @DecimalMin(value = "0.0", message = "Operating margin must be non-negative")
     @DecimalMax(value = "999.99", message = "Operating margin cannot exceed 999.99%")
@@ -99,6 +104,6 @@ public record DetailsSummaryDTO(
 
     // Custom constructor for test convenience
     public DetailsSummaryDTO(String ticker, BigDecimal previousClose) {
-        this(ticker, null, null, previousClose, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        this(ticker, null, null, previousClose, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 }
