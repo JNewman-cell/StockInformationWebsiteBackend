@@ -54,7 +54,7 @@ queryFactory
 
 #### Cache Configuration
 - **TTL Management**: Different expiration policies per data type
-  - Stock details: 60 minutes (less volatile)
+  - Stock details: 15 minutes (less volatile)
   - Autocomplete results: 15 minutes (frequent updates)
 - **Cache Warming**: Preload frequently accessed tickers on startup
 - **Lettuce Client**: Non-blocking Redis client with connection pooling

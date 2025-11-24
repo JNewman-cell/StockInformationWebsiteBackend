@@ -84,12 +84,12 @@ public class RedisCacheConfig {
         RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(valuePair)
-                // sensible default TTL for caches
-                .entryTtl(Duration.ofMinutes(60));
+                // sensible default TTL for caches (now 15 minutes)
+                .entryTtl(Duration.ofMinutes(15));
 
         // shorter TTL for autocomplete results
         Map<String, RedisCacheConfiguration> cacheConfigs = Map.of(
-                "autocomplete", defaultConfig.entryTtl(Duration.ofMinutes(15))
+            "autocomplete", defaultConfig.entryTtl(Duration.ofMinutes(15))
         );
 
         return RedisCacheManager.builder(redisConnectionFactory)
